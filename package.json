@@ -8,6 +8,8 @@
     "dev": "nodemon --watch api --exec babel-node -- index.js",
     "build": "babel api -d api/dist --copy-files --ignore api/dist",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "npx sequelize-cli db:migrate",
+    "dbreset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
     "lint": "eslint --fix api/"
   },
   "repository": {
