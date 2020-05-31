@@ -4,7 +4,11 @@
   "description": "A task schedule api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "babel-node index.js",
+    "dev": "nodemon --watch api --exec babel-node -- index.js",
+    "build": "babel api -d api/dist --copy-files --ignore api/dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix api/"
   },
   "repository": {
     "type": "git",
@@ -17,11 +21,29 @@
   },
   "homepage": "https://github.com/PascalUlor/task-schedule-api#readme",
   "dependencies": {
+    "@babel/polyfill": "^7.10.1",
+    "app-root-path": "^3.0.0",
+    "core-js": "^3.6.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.22.0",
-    "nodemon": "^2.0.4",
+    "morgan": "^1.10.0",
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.11"
+    "regenerator-runtime": "^0.13.5",
+    "sequelize": "^5.21.11",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/node": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
+    "babel-register": "^6.26.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "nodemon": "^2.0.4"
   }
 }
