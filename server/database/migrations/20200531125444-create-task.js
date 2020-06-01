@@ -33,6 +33,16 @@ module.exports = {
         },
         allowNull: false,
       },
+      projectId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Projects',
+          },
+          key: 'id',
+        },
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

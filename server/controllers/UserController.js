@@ -38,12 +38,15 @@ export default class UserController {
 
       if (name) {
         const userName = name.replace(/ /g, '');
-        const searchUsers = await User.findAll(
+        const searchUsers = await User.findAndCountAll(
           pagination(
             {
               where: {
                 name: { [Op.iLike]: `%${userName}%` },
               },
+              order: [
+                ['id', 'ASC'],
+              ],
             },
             perPage, currentPage,
           ),
@@ -59,12 +62,15 @@ export default class UserController {
 
       if (surname) {
         const userSurname = surname.replace(/ /g, '');
-        const searchUsers = await User.findAll(
+        const searchUsers = await User.findAndCountAll(
           pagination(
             {
               where: {
                 surname: { [Op.iLike]: `%${userSurname}%` },
               },
+              order: [
+                ['id', 'ASC'],
+              ],
             },
             perPage, currentPage,
           ),
@@ -77,7 +83,7 @@ export default class UserController {
         return requestHandler.error(res, 400, 'Search by surname Failed');
       }
 
-      const users = await User.findAll(
+      const users = await User.findAndCountAll(
         pagination(
           {},
           perPage, currentPage,
