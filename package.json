@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node index.js",
-    "dev": "nodemon --watch api --exec babel-node -- index.js",
-    "build": "babel api -d api/dist --copy-files --ignore api/dist",
+    "dev": "nodemon --watch server --exec babel-node -- index.js",
+    "build": "babel server -d server/dist --copy-files --ignore server/dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "npx sequelize-cli db:migrate",
     "dbreset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
@@ -35,6 +35,7 @@
     "pg-hstore": "^2.3.3",
     "regenerator-runtime": "^0.13.5",
     "sequelize": "^5.21.11",
+    "validator": "^13.0.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {

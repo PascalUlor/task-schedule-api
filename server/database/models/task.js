@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Task.belongsTo(models.User, { as: 'user', foreignKey: 'userId', onDelete: 'CASCADE' });
     Task.belongsTo(models.Project, { as: 'project', foreignKey: 'projectId', onDelete: 'CASCADE' });
-    Task.belongsToMany(models.User, { through: 'Task_Assign', as: 'participants' });
+    Task.belongsToMany(models.User, { through: 'Task_Assign', as: 'assignee' });
   };
   return Task;
 };

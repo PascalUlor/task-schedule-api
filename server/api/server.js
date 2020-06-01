@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import winston from '../config/winston';
+import routes from '../routes';
 
 
 const app = express();
@@ -30,6 +31,7 @@ app.use((err, req, res, next) => {
   next();
 });
 
+app.use('/api', routes);
 
 app.get('/', (req, res) => {
   res.status(200).json({

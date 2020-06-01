@@ -1,7 +1,7 @@
 import http from 'http';
 import dotenv from 'dotenv';
-import app from './api/server';
-import winston from './config/winston';
+import app from './server/api/server';
+import winston from './server/config/winston';
 
 dotenv.config();
 
