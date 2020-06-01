@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import { User } from '../database/models';
 import requestHandler from '../utils/requestHandler';
+import generateToken from '../utils/generateToken';
 import pagination from '../utils/pagination';
 
 
@@ -24,7 +25,7 @@ export default class UserController {
   static async createUser(req, res) {
     try {
       const newUser = req.newuser;
-      return requestHandler.success(res, 201, 'User created successfully', newUser);
+      return generateToken(res, 201, 'User created successfully', newUser);
     } catch (err) {
       return requestHandler.error(res, 500, `server error ${err.message}`);
     }
