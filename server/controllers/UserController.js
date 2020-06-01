@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import { User } from '../database/models';
 import requestHandler from '../utils/requestHandler';
+import pagination from '../utils/pagination';
 
 
 /**
@@ -32,13 +33,21 @@ export default class UserController {
   static async handleGetUserList(req, res) {
     try {
       const { name, surname } = req.query;
+      const { perPage, currentPage } = req.query;
+
       if (name) {
         const userName = name.replace(/ /g, '');
-        const searchUsers = await User.findAll({
-          where: {
-            name: { [Op.iLike]: `%${userName}%` },
-          },
-        });
+        const searchUsers = await User.findAll(
+          pagination(
+            {
+              where: {
+                name: { [Op.iLike]: `%${userName}%` },
+              },
+            },
+            perPage, currentPage,
+          ),
+        );
+
         if (searchUsers.length > 0) {
           return requestHandler.success(res, 200, 'Search by user name successfully', {
             searchUsers,
@@ -49,11 +58,16 @@ export default class UserController {
 
       if (surname) {
         const userSurname = surname.replace(/ /g, '');
-        const searchUsers = await User.findAll({
-          where: {
-            surname: { [Op.iLike]: `%${userSurname}%` },
-          },
-        });
+        const searchUsers = await User.findAll(
+          pagination(
+            {
+              where: {
+                surname: { [Op.iLike]: `%${userSurname}%` },
+              },
+            },
+            perPage, currentPage,
+          ),
+        );
         if (searchUsers.length > 0) {
           return requestHandler.success(res, 200, 'Search by surname successfully', {
             searchUsers,
@@ -62,7 +76,12 @@ export default class UserController {
         return requestHandler.error(res, 400, 'Search by surname Failed');
       }
 
-      const users = await User.findAll();
+      const users = await User.findAll(
+        pagination(
+          {},
+          perPage, currentPage,
+        ),
+      );
       return requestHandler.success(res, 200, 'Users fetched successfully', {
         users,
       });
