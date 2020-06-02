@@ -63,6 +63,22 @@ export default class ProjectController {
         ],
       });
 
+      if (!assignee.id) {
+        return requestHandler.error(
+          res,
+          409,
+          'User does not exist',
+        );
+      }
+
+      if (assignee.projects.length > 0) {
+        return requestHandler.error(
+          res,
+          409,
+          'User is already assigned this project',
+        );
+      }
+
       await userProject.addUser(assignee);
 
       return requestHandler.success(res, 200, 'New Assignee added to project successfully', {
@@ -114,20 +130,19 @@ export default class ProjectController {
         ),
       );
       const ProjectDeets = {};
-      const ProjectUsers = {};
+
+      const userList = [];
       // console.log('>>>>>', projects.rows.map((project) => project.name));
       // console.log('>>>>>', projects.rows.map((project) => project.users.map((user) => user.name)));
       return requestHandler.success(res, 200, 'Projects fetched successfully', {
+        // ...projects,
         ...projects.rows.map((project) => {
           ProjectDeets.count = projects.count;
           ProjectDeets.ProjectName = project.name;
           ProjectDeets.status = project.status;
           ProjectDeets.body = project.body;
-          ProjectDeets.users = project.users.map((user) => {
-            ProjectUsers.name = user.name;
-            ProjectUsers.email = user.email;
-            return ProjectUsers;
-          });
+          project.users.map((user) => userList.push({ name: user.name, email: user.email }));
+          ProjectDeets.users = userList;
           return ProjectDeets;
         }),
       });

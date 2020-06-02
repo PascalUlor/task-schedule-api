@@ -7,7 +7,10 @@ const router = Router();
 
 
 router.route('/')
-  .post(Authentication, TaskValidator.taskInput, TaskController.createTask);
-//   .get(UserController.handleGetUserList);
+  .post(Authentication, TaskValidator.taskInput, TaskController.createTask)
+  .get(TaskController.getTasks);
+
+router.route('/assign')
+  .post(Authentication, TaskValidator.assignedTask, TaskController.taskAssign);
 
 export default router;
