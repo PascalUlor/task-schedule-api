@@ -36,12 +36,13 @@ export default class UserValidator {
       return requestHandler.error(
         res,
         409,
-        `User withemail ${email} already exist`,
+        `User with email ${email} already exist`,
       );
     }
     const newUser = await User.create({ name, surname, email });
 
     req.newuser = newUser;
+    winston.info('>>>>> user input validated');
     next();
   }
 }

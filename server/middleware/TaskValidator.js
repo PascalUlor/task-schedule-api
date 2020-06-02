@@ -65,6 +65,7 @@ export default class TaskValidator {
     }
 
     req.wip = userTask;
+    winston.info('>>>>> task input validated');
     next();
   }
 }

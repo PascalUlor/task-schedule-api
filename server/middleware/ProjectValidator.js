@@ -1,7 +1,7 @@
 import checkItem from '../utils/checkInputs';
 import requestHandler from '../utils/requestHandler';
 import { User, Project } from '../database/models';
-// import winston from '../config/winston';
+import winston from '../config/winston';
 
 /**
  * Validates all routes
@@ -28,6 +28,7 @@ export default class ProjectValidator {
         check,
       });
     }
+    winston.info('>>>>> project input validated');
     next();
   }
 

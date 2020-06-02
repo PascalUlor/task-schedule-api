@@ -7,9 +7,12 @@
     "start": "babel-node index.js",
     "dev": "nodemon --watch server --exec babel-node -- index.js",
     "build": "babel server -d server/dist --copy-files --ignore server/dist",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "npm run build",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --testTimeout=20000 --coverage --runInBand --forceExit",
     "migrate": "npx sequelize-cli db:migrate",
     "dbreset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
+    "pretest": "cross-env NODE_ENV=test npx sequelize-cli db:migrate:undo:all && cross-env NODE_ENV=test npm run migrate",
+    "coverage": "npm test && cat ./coverage/lcov.info | coveralls",
     "lint": "eslint --fix api/"
   },
   "repository": {
@@ -45,9 +48,13 @@
     "@babel/node": "^7.10.1",
     "@babel/preset-env": "^7.10.2",
     "babel-register": "^6.26.0",
+    "coveralls": "^3.1.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
-    "nodemon": "^2.0.4"
+    "jest": "^26.0.1",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
   }
 }

@@ -36,7 +36,7 @@ app.use('/api', routes);
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 200,
-    message: 'Hello from Hackton backend!',
+    message: 'Hello from your Backend Engineer!',
   });
 });
 

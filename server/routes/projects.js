@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import ProjectController from '../controllers/ProjectController';
+import ProjectController from '../controllers/ProjectController/ProjectController';
 import ProjectValidator from '../middleware/ProjectValidator';
 import Authentication from '../api/auth/authenticate';
 

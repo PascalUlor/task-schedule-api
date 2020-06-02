@@ -1,8 +1,8 @@
 import { Op } from 'sequelize';
-import { User, Project } from '../database/models';
-import requestHandler from '../utils/requestHandler';
-import generateToken from '../utils/generateToken';
-import pagination from '../utils/pagination';
+import { User, Project } from '../../database/models';
+import requestHandler from '../../utils/requestHandler';
+import generateToken from '../../utils/generateToken';
+import pagination from '../../utils/pagination';
 
 
 /**

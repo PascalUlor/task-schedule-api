@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
-import { Task, User, Project } from '../database/models';
-import requestHandler from '../utils/requestHandler';
-import pagination from '../utils/pagination';
+import { Task, User, Project } from '../../database/models';
+import requestHandler from '../../utils/requestHandler';
+import pagination from '../../utils/pagination';
 
 
 /**
