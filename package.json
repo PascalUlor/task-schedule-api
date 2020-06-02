@@ -7,7 +7,7 @@
     "start": "NODE_ENV=production && npm run build && node ./build/index.js",
     "dev": "nodemon --watch server --exec babel-node -- index.js",
     "build": "npm run clean && npm run build-babel",
-    "build-babel": "babel ./server -d ./server -s",
+    "build-babel": "babel -d ./build ./server -s",
     "clean": "rm -rf build && mkdir build",
     "heroku-postbuild": "NODE_ENV=production && npm run dbreset",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --testTimeout=20000 --coverage --runInBand --forceExit",
