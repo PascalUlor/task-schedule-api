@@ -29,6 +29,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.10.1",
     "app-root-path": "^3.0.0",
+    "babel-node": "0.0.1-security",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
