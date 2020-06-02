@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel-node index.js",
     "dev": "nodemon --watch server --exec babel-node -- index.js",
-    "build": "babel server -d server/dist --copy-files --ignore server/dist",
+    "build": "babel ./server -d ./server/dist --copy-files --ignore ./server/dist",
     "postinstall": "npm run build",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --testTimeout=20000 --coverage --runInBand --forceExit",
     "migrate": "npx sequelize-cli db:migrate",
