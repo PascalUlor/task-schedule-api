@@ -38,14 +38,19 @@ export default class ProjectValidator {
     const { projectId, assigneeId } = req.body;
 
     const userProject = await Project.findOne({
-      where: { userId, id: projectId },
+      where: { id: projectId },
+      includes: [
+        {
+          model: User.findOne({ where: { id: userId } }),
+        },
+      ],
     });
 
     if (!userProject) {
       return requestHandler.error(
         res,
         403,
-        'You don\'t have permission to access this project',
+        'You don\'t have permission to assign this project',
       );
     }
 
@@ -59,6 +64,7 @@ export default class ProjectValidator {
       });
     }
 
+    req.wip = userProject;
     next();
   }
 }

@@ -1,5 +1,7 @@
+import { Op } from 'sequelize';
 import { Project, User } from '../database/models';
 import requestHandler from '../utils/requestHandler';
+import pagination from '../utils/pagination';
 
 
 /**
@@ -46,26 +48,88 @@ export default class ProjectController {
 
   static async projectAssign(req, res) {
     try {
-      const { userId } = req.decodedToken;
-      const { projectId, assigneeId } = req.body;
+      // const { userId } = req.decodedToken;
+      const { assigneeId } = req.body;
 
-      const assignee = await User.findOne({ where: { id: assigneeId } });
-      const userProject = await Project.findOne({
-        where: { userId, id: projectId },
+      const userProject = req.wip;
+
+      const assignee = await User.findOne({
+        where: { id: assigneeId },
+        include: [
+          {
+            model: Project,
+            as: 'projects',
+          },
+        ],
       });
-
-      if (!userProject) {
-        return requestHandler.error(
-          res,
-          403,
-          'You don\'t have permission to access this project',
-        );
-      }
 
       await userProject.addUser(assignee);
 
       return requestHandler.success(res, 200, 'New Assignee added to project successfully', {
-        userProject,
+        assignee,
+      });
+    } catch (error) {
+      return requestHandler.error(res, 500, `server error ${error.message}`);
+    }
+  }
+
+  static async getProjects(req, res) {
+    try {
+      const { name } = req.query;
+      const { perPage, currentPage } = req.query;
+      if (name) {
+        const projectName = name.replace(/ /g, '');
+        const searchProjects = await Project.findAndCountAll(
+          pagination(
+            {
+              where: {
+                name: { [Op.iLike]: `%${projectName}%` },
+              },
+              order: [
+                ['id', 'ASC'],
+              ],
+            },
+            perPage, currentPage,
+          ),
+        );
+
+        if (searchProjects.length > 0) {
+          return requestHandler.success(res, 200, 'Search by project name successfully', {
+            ...searchProjects,
+          });
+        }
+        return requestHandler.error(res, 400, 'Search by project name Failed');
+      }
+      const projects = await Project.findAndCountAll(
+        pagination(
+          {
+            include: [
+              {
+                model: User,
+                as: 'users',
+              },
+            ],
+          },
+          perPage, currentPage,
+        ),
+      );
+      const ProjectDeets = {};
+      const ProjectUsers = {};
+      // console.log('>>>>>', projects.rows.map((project) => project.name));
+      // console.log('>>>>>', projects.rows.map((project) => project.users.map((user) => user.name)));
+      return requestHandler.success(res, 200, 'Projects fetched successfully', {
+        ...projects.rows.map((project) => {
+          ProjectDeets.count = projects.count;
+          ProjectDeets.ProjectName = project.name;
+          ProjectDeets.status = project.status;
+          ProjectDeets.body = project.body;
+          ProjectDeets.users = project.users.map((user) => {
+            ProjectUsers.name = user.name;
+            ProjectUsers.email = user.email;
+            return ProjectUsers;
+          });
+          return ProjectDeets;
+        }),
       });
     } catch (error) {
       return requestHandler.error(res, 500, `server error ${error.message}`);

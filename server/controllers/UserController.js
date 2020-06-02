@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import { User, ProjectSchedule } from '../database/models';
+import { User, Project } from '../database/models';
 import requestHandler from '../utils/requestHandler';
 import generateToken from '../utils/generateToken';
 import pagination from '../utils/pagination';
@@ -47,6 +47,12 @@ export default class UserController {
               order: [
                 ['id', 'ASC'],
               ],
+              include: [
+                {
+                  model: Project,
+                  as: 'projects',
+                },
+              ],
             },
             perPage, currentPage,
           ),
@@ -71,6 +77,12 @@ export default class UserController {
               order: [
                 ['id', 'ASC'],
               ],
+              include: [
+                {
+                  model: Project,
+                  as: 'projects',
+                },
+              ],
             },
             perPage, currentPage,
           ),
@@ -85,7 +97,14 @@ export default class UserController {
 
       const users = await User.findAndCountAll(
         pagination(
-          {},
+          {
+            include: [
+              {
+                model: Project,
+                as: 'projects',
+              },
+            ],
+          },
           perPage, currentPage,
         ),
       );

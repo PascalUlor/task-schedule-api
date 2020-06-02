@@ -7,8 +7,8 @@ const router = Router();
 
 
 router.route('/')
-  .post(Authentication, ProjectValidator.projectInput, ProjectController.createProject);
-//   .get(UserController.handleGetUserList);
+  .post(Authentication, ProjectValidator.projectInput, ProjectController.createProject)
+  .get(ProjectController.getProjects);
 
 router.route('/assign')
   .post(Authentication, ProjectValidator.assignedProject, ProjectController.projectAssign);
