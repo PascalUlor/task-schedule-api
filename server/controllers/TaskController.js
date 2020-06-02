@@ -108,14 +108,32 @@ export default class TaskController {
               order: [
                 ['id', 'ASC'],
               ],
+              include: [
+                {
+                  model: User,
+                  as: 'users',
+                },
+              ],
             },
             perPage, currentPage,
           ),
         );
 
-        if (searchTasks.length > 0) {
+        const TaskDeets = {};
+        const userList = [];
+
+        if (searchTasks.rows.length > 0) {
           return requestHandler.success(res, 200, 'Search by task name successfully', {
-            ...searchTasks,
+            ...searchTasks.rows.map((task) => {
+              TaskDeets.count = searchTasks.count;
+              TaskDeets.TaskName = task.name;
+              TaskDeets.TaskScore = task.score;
+              TaskDeets.status = task.status;
+              TaskDeets.description = task.description;
+              task.users.map((user) => userList.push({ name: user.name, email: user.email }));
+              TaskDeets.users = userList;
+              return TaskDeets;
+            }),
           });
         }
         return requestHandler.error(res, 400, 'Search by task name Failed');

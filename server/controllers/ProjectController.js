@@ -104,14 +104,32 @@ export default class ProjectController {
               order: [
                 ['id', 'ASC'],
               ],
+              include: [
+                {
+                  model: User,
+                  as: 'users',
+                },
+              ],
             },
             perPage, currentPage,
           ),
         );
 
-        if (searchProjects.length > 0) {
+        const ProjectDeets = {};
+
+        const userList = [];
+
+        if (searchProjects.rows.length > 0) {
           return requestHandler.success(res, 200, 'Search by project name successfully', {
-            ...searchProjects,
+            ...searchProjects.rows.map((project) => {
+              ProjectDeets.count = searchProjects.count;
+              ProjectDeets.ProjectName = project.name;
+              ProjectDeets.status = project.status;
+              ProjectDeets.body = project.body;
+              project.users.map((user) => userList.push({ name: user.name, email: user.email }));
+              ProjectDeets.users = userList;
+              return ProjectDeets;
+            }),
           });
         }
         return requestHandler.error(res, 400, 'Search by project name Failed');
