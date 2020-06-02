@@ -1,12 +1,12 @@
 /* eslint-disable camelcase */
 
 module.exports = (sequelize, DataTypes) => {
-  const Task_Assign = sequelize.define('Task_Assign', {
+  const UserTasks = sequelize.define('UserTasks', {
     TaskId: DataTypes.INTEGER,
-    ParticipantId: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER,
   }, {});
-  Task_Assign.associate = function (models) {
+  UserTasks.associate = function (models) {
     // associations can be defined here
   };
-  return Task_Assign;
+  return UserTasks;
 };

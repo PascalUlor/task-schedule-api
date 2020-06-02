@@ -1,6 +1,6 @@
 import checkItem from '../utils/checkInputs';
 import requestHandler from '../utils/requestHandler';
-import { User } from '../database/models';
+import { User, Project } from '../database/models';
 import winston from '../config/winston';
 
 /**

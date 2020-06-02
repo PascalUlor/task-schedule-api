@@ -17,22 +17,9 @@ export default class TaskValidator {
    */
   // eslint-disable-next-line consistent-return
   static async taskInput(req, res, next) {
-    const { userId } = req.decodedToken;
     const {
       name, description, score, status, projectId,
     } = req.body;
-    const userProject = await Project.findOne({
-      where: { userId },
-    });
-
-    if (!userProject) {
-      return requestHandler.error(
-        res,
-        403,
-        'You don\'t have permission to access this project',
-      );
-    }
-
     const check = checkItem({
       name, description, score, status, projectId,
     });

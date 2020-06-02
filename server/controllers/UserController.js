@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import { User } from '../database/models';
+import { User, ProjectSchedule } from '../database/models';
 import requestHandler from '../utils/requestHandler';
 import generateToken from '../utils/generateToken';
 import pagination from '../utils/pagination';
@@ -54,7 +54,7 @@ export default class UserController {
 
         if (searchUsers.length > 0) {
           return requestHandler.success(res, 200, 'Search by user name successfully', {
-            searchUsers,
+            ...searchUsers,
           });
         }
         return requestHandler.error(res, 400, 'Search by user name Failed');
@@ -77,7 +77,7 @@ export default class UserController {
         );
         if (searchUsers.length > 0) {
           return requestHandler.success(res, 200, 'Search by surname successfully', {
-            searchUsers,
+            ...searchUsers,
           });
         }
         return requestHandler.error(res, 400, 'Search by surname Failed');
@@ -90,7 +90,7 @@ export default class UserController {
         ),
       );
       return requestHandler.success(res, 200, 'Users fetched successfully', {
-        users,
+        ...users,
       });
     } catch (error) {
       return requestHandler.error(res, 500, `server error ${error.message}`);

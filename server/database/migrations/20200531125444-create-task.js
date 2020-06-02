@@ -23,16 +23,16 @@ module.exports = {
       score: {
         type: Sequelize.INTEGER,
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: 'Users',
-          },
-          key: 'id',
-        },
-        allowNull: false,
-      },
+      // userId: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: {
+      //       tableName: 'Users',
+      //     },
+      //     key: 'id',
+      //   },
+      //   allowNull: false,
+      // },
       projectId: {
         type: Sequelize.INTEGER,
         references: {

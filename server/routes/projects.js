@@ -10,4 +10,7 @@ router.route('/')
   .post(Authentication, ProjectValidator.projectInput, ProjectController.createProject);
 //   .get(UserController.handleGetUserList);
 
+router.route('/assign')
+  .post(Authentication, ProjectValidator.assignedProject, ProjectController.projectAssign);
+
 export default router;

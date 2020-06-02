@@ -1,4 +1,4 @@
-import { Task } from '../database/models';
+import { Task, User } from '../database/models';
 import requestHandler from '../utils/requestHandler';
 
 
@@ -25,11 +25,24 @@ export default class TaskController {
       const {
         name, description, score, status, projectId,
       } = req.body;
-
-      const newProject = await Task.create({
-        name, description, score, status, projectId, userId,
+      const user = await User.findOne({ where: { id: userId } });
+      const task = await Task.findOne({
+        where: { name },
       });
-      return requestHandler.success(res, 201, 'Task created successfully', newProject);
+      if (task) {
+        return requestHandler.error(
+          res,
+          409,
+          `Task with name ${name} already exist`,
+        );
+      }
+
+      const newTask = await Task.create({
+        name, description, score, status, projectId,
+      });
+      user.addTasks(newTask);
+
+      return requestHandler.success(res, 201, 'Task created successfully', newTask);
     } catch (err) {
       return requestHandler.error(res, 500, `server error ${err.message}`);
     }

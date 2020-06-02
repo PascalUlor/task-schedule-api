@@ -1,6 +1,6 @@
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Project_Assigns', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('UserProjects', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -17,7 +17,7 @@ module.exports = {
       },
       allowNull: false,
     },
-    ParticipantId: {
+    UserId: {
       type: Sequelize.INTEGER,
       references: {
         model: {
@@ -36,5 +36,5 @@ module.exports = {
       type: Sequelize.DATE,
     },
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('Project_Assigns'),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('UserProjects'),
 };

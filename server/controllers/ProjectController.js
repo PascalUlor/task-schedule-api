@@ -1,4 +1,4 @@
-import { Project } from '../database/models';
+import { Project, User } from '../database/models';
 import requestHandler from '../utils/requestHandler';
 
 
@@ -23,13 +23,52 @@ export default class ProjectController {
     try {
       const { userId } = req.decodedToken;
       const { name, body, status } = req.body;
-
-      const newProject = await Project.create({
-        name, body, status, userId,
+      const user = await User.findOne({ where: { id: userId } });
+      const project = await Project.findOne({
+        where: { name },
       });
+      if (project) {
+        return requestHandler.error(
+          res,
+          409,
+          `Project with name ${name} already exist`,
+        );
+      }
+      const newProject = await Project.create({
+        name, body, status,
+      });
+      user.addProjects(newProject);
       return requestHandler.success(res, 201, 'Project created successfully', newProject);
     } catch (err) {
       return requestHandler.error(res, 500, `server error ${err.message}`);
+    }
+  }
+
+  static async projectAssign(req, res) {
+    try {
+      const { userId } = req.decodedToken;
+      const { projectId, assigneeId } = req.body;
+
+      const assignee = await User.findOne({ where: { id: assigneeId } });
+      const userProject = await Project.findOne({
+        where: { userId, id: projectId },
+      });
+
+      if (!userProject) {
+        return requestHandler.error(
+          res,
+          403,
+          'You don\'t have permission to access this project',
+        );
+      }
+
+      await userProject.addUser(assignee);
+
+      return requestHandler.success(res, 200, 'New Assignee added to project successfully', {
+        userProject,
+      });
+    } catch (error) {
+      return requestHandler.error(res, 500, `server error ${error.message}`);
     }
   }
 }

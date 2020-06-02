@@ -1,6 +1,6 @@
 import checkItem from '../utils/checkInputs';
-// import requestHandler from '../utils/requestHandler';
-// import { User, Project } from '../database/models';
+import requestHandler from '../utils/requestHandler';
+import { User, Project } from '../database/models';
 // import winston from '../config/winston';
 
 /**
@@ -28,6 +28,37 @@ export default class ProjectValidator {
         check,
       });
     }
+    next();
+  }
+
+
+  static async assignedProject(req, res, next) {
+    const { userId } = req.decodedToken;
+
+    const { projectId, assigneeId } = req.body;
+
+    const userProject = await Project.findOne({
+      where: { userId, id: projectId },
+    });
+
+    if (!userProject) {
+      return requestHandler.error(
+        res,
+        403,
+        'You don\'t have permission to access this project',
+      );
+    }
+
+    const check = checkItem({
+      assigneeId,
+    });
+    if (Object.keys(check).length > 0) {
+      return res.status(400).json({
+        statusCode: 400,
+        check,
+      });
+    }
+
     next();
   }
 }
