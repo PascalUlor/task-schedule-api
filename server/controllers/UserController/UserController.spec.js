@@ -5,7 +5,7 @@ import mockUsers from '../../database/mock/user.mock';
 const baseUrl = '/api';
 const app = request(server);
 
-describe('[POST]/users should create a new user', () => {
+describe('[POST] and  [GET] /users', () => {
   test('should create a user and return 201 Created', async () => {
     const res = await app
       .post(`${baseUrl}/users`)
@@ -17,7 +17,7 @@ describe('[POST]/users should create a new user', () => {
     expect(res.body.token);
   });
 
-  test('should throw an error if any field is empty', async () => {
+  test('[400] should throw an error if any field is empty return', async () => {
     const res = await app
       .post(`${baseUrl}/users`)
       .set('Content-Type', 'application/json')
@@ -30,7 +30,7 @@ describe('[POST]/users should create a new user', () => {
     });
   });
 
-  test('should throw an error if the email has already been used by another user', async () => {
+  test('[409] should throw an error if the email has already been used by another user', async () => {
     await app
       .post(`${baseUrl}/users`)
       .set('Content-Type', 'application/json')
@@ -45,5 +45,50 @@ describe('[POST]/users should create a new user', () => {
     expect(res.body.message).toEqual(
       'User with email flash@yahoo.com already exist',
     );
+  });
+
+  test('[200] user can [GET] all users', async (done) => {
+    const res = await app
+      .get(`${baseUrl}/users`)
+      .set('Content-Type', 'application/json');
+    expect(res.status).toBe(200);
+    expect(res.body.message).toEqual('Users fetched successfully');
+    done();
+  });
+
+  test('[200] user can [GET] users by name', async (done) => {
+    const res = await app
+      .get(`${baseUrl}/users?name=${mockUsers.validInput2.name}`)
+      .set('Content-Type', 'application/json');
+    expect(res.status).toBe(200);
+    expect(res.body.message).toEqual('Search by user name successfully');
+    done();
+  });
+
+  test('user can [GET] users by surname', async (done) => {
+    const res = await app
+      .get(`${baseUrl}/users?surname=${mockUsers.validInput2.surname}`)
+      .set('Content-Type', 'application/json');
+    expect(res.status).toBe(200);
+    expect(res.body.message).toEqual('Search by surname successfully');
+    done();
+  });
+
+  test('[400] Failed [GET] users if name does not exist', async (done) => {
+    const res = await app
+      .get(`${baseUrl}/users?name=dummy`)
+      .set('Content-Type', 'application/json');
+    expect(res.status).toBe(400);
+    expect(res.body.message).toEqual('Search by user name Failed');
+    done();
+  });
+
+  test('[400] Failed [GET] users if surname does not exist', async (done) => {
+    const res = await app
+      .get(`${baseUrl}/users?surname=dummy`)
+      .set('Content-Type', 'application/json');
+    expect(res.status).toBe(400);
+    expect(res.body.message).toEqual('Search by surname Failed');
+    done();
   });
 });

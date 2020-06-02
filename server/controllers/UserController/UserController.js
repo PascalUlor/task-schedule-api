@@ -58,7 +58,7 @@ export default class UserController {
           ),
         );
 
-        if (searchUsers.length > 0) {
+        if (searchUsers.rows.length > 0) {
           return requestHandler.success(res, 200, 'Search by user name successfully', {
             ...searchUsers,
           });
@@ -87,7 +87,7 @@ export default class UserController {
             perPage, currentPage,
           ),
         );
-        if (searchUsers.length > 0) {
+        if (searchUsers.rows.length > 0) {
           return requestHandler.success(res, 200, 'Search by surname successfully', {
             ...searchUsers,
           });
