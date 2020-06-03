@@ -19,16 +19,6 @@ module.exports = {
       type: Sequelize.ENUM(['active', 'inactive', 'declined', 'completed']),
       defaultValue: 'inactive',
     },
-    // userId: {
-    //   type: Sequelize.INTEGER,
-    //   references: {
-    //     model: {
-    //       tableName: 'Users',
-    //     },
-    //     key: 'id',
-    //   },
-    //   allowNull: false,
-    // },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

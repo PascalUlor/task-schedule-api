@@ -9,7 +9,7 @@
     "build": "babel server -d server/dist",
     "postinstall": "npm run build",
     "heroku-postbuild": "NODE_ENV=production && npm run dbreset",
-    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --testTimeout=20000 --coverage --runInBand --forceExit",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --runInBand --forceExit",
     "migrate": "npx sequelize-cli db:migrate",
     "dbreset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
     "pretest": "cross-env NODE_ENV=test npx sequelize-cli db:migrate:undo:all && cross-env NODE_ENV=test npm run migrate",

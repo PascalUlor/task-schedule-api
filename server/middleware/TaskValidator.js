@@ -9,7 +9,7 @@ import winston from '../config/winston';
  */
 export default class TaskValidator {
   /**
-   * Validates all user details
+   * Validates all tasks details
    * @param {obj} req
    * @param {obj} res
    * @param {obj} next

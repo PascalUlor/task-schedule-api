@@ -48,7 +48,6 @@ export default class ProjectController {
 
   static async projectAssign(req, res) {
     try {
-      // const { userId } = req.decodedToken;
       const { assigneeId } = req.body;
 
       const userProject = req.wip;
@@ -150,10 +149,8 @@ export default class ProjectController {
       const ProjectDeets = {};
 
       const userList = [];
-      // console.log('>>>>>', projects.rows.map((project) => project.name));
-      // console.log('>>>>>', projects.rows.map((project) => project.users.map((user) => user.name)));
+
       return requestHandler.success(res, 200, 'Projects fetched successfully', {
-        // ...projects,
         ...projects.rows.map((project) => {
           ProjectDeets.count = projects.count;
           ProjectDeets.ProjectName = project.name;

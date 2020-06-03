@@ -3,7 +3,6 @@ import server from '../../api/server';
 import mockProjects from '../../database/mock/projects.mock';
 import mockUsers from '../../database/mock/user.mock';
 import mockTask from '../../database/mock/task.mock';
-import winston from '../../config/winston';
 
 const baseUrl = '/api';
 const app = request(server);
@@ -34,6 +33,24 @@ describe('[POST] and  [GET] /tasks', () => {
     });
   
     test('[200] user can get all tasks', async () => {
+      const res1 = await app
+    .post(`${baseUrl}/users`)
+    .set('Content-Type', 'application/json')
+    .send(mockUsers.validInput4);
+  let token = res1.body.body?.token;
+
+    await app
+      .post(`${baseUrl}/projects`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send(mockProjects.project3);
+
+      await app
+        .post(`${baseUrl}/tasks`)
+        .set('Authorization', token)
+        .set('Content-Type', 'application/json')
+        .send(mockTask.task2);
+
       const res = await app
         .get(`${baseUrl}/tasks`)
         .set('Content-Type', 'application/json')

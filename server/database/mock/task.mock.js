@@ -4,13 +4,14 @@ export default {
     description: 'social media gaint',
     status: 'inactive',
     score: 2,
-    projectId: 2,
+    projectId: 1,
   },
   task2: {
     name: 'twitter',
     description: 'gossip and news',
     status: 'active',
     score: 3,
+    projectId: 2,
   },
   task3: {
     name: 'whatsapp',

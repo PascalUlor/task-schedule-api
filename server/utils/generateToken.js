@@ -11,7 +11,7 @@ const generateToken = (res, statusCode, message, user) => {
   };
   const result = jwt.sign(
     payload,
-    process.env.SECRET || 'testing test',
+    process.env.SECRET || 'testing',
     options,
   );
   return requestHandler.success(res, statusCode, message, { token: result });

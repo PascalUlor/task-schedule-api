@@ -52,7 +52,6 @@ export default class TaskController {
 
   static async taskAssign(req, res) {
     try {
-      // const { userId } = req.decodedToken;
       const { assigneeId } = req.body;
 
       const userTask = req.wip;
@@ -153,8 +152,7 @@ export default class TaskController {
       );
       const TaskDeets = {};
       const userList = [];
-      // console.log('>>>>>', tasks.rows.map((task) => task.name));
-      // console.log('>>>>>', tasks.rows.map((task) => task.users.map((user) => user.name)));
+
       return requestHandler.success(res, 200, 'Tasks fetched successfully', {
         ...tasks.rows.map((task) => {
           TaskDeets.count = tasks.count;

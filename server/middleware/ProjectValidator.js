@@ -9,7 +9,7 @@ import winston from '../config/winston';
  */
 export default class ProjectValidator {
   /**
-   * Validates all user details
+   * Validates all project details
    * @param {obj} req
    * @param {obj} res
    * @param {obj} next

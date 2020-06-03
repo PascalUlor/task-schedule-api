@@ -2,27 +2,9 @@ import request from 'supertest';
 import server from '../../api/server';
 import mockProjects from '../../database/mock/projects.mock';
 import mockUsers from '../../database/mock/user.mock';
-import winston from '../../config/winston';
 
 const baseUrl = '/api';
 const app = request(server);
-
-// let token;
-// let token2;
-
-// beforeEach(async () => {
-//   const res = await app
-//     .post(`${baseUrl}/users`)
-//     .set('Content-Type', 'application/json')
-//     .send(mockUsers.validInput3);
-//   token = res.body.body?.token;
-
-//   const res2 = await app
-//     .post(`${baseUrl}/users`)
-//     .set('Content-Type', 'application/json')
-//     .send(mockUsers.validInput4);
-//   token2 = res2.body.body?.token;
-// });
 
 describe('[POST] and  [GET] /projects', () => {
   test('[201] user can create new project', async () => {

@@ -16,22 +16,29 @@ const checkInput = (inputValue) => {
       /*
        *input Validation
        */
-      if (key === 'event_title') {
-        if (!validator.isLength(inputValue[key], { min: 10 })) {
-          errors[key] = `${key} must be between 10 to 50 characters`;
+      if (key === 'name' || key === 'surname') {
+        if (!validator.isLength(inputValue[key], { min: 3 })) {
+          errors[key] = `${key} must be between 3 to 50 characters`;
         }
       }
+
+      if (key === 'name' || key === 'surname') {
+        if (inputValue[key].search(/[^A-Za-z\s]/) !== -1) {
+          errors[key] = `${key} can only be alphabetical`;
+        }
+      }
+
       if (key === 'description' || key === 'body') {
         if (!validator.isLength(inputValue[key], { min: 10 })) {
           errors[key] = `${key} must be between 10 to 100 characters`;
         }
       }
 
-      if (key === 'participation_type') {
+      if (key === 'status') {
         if (!['active', 'inactive', 'declined', 'completed'].includes(inputValue[key])) {
           errors[
             key
-          ] = 'please pick between these three options for participation type [\'individual\',\'team\',\'both\']';
+          ] = 'please pick between these four options for status type [\'active\',\'inactive\',\'declined\', \'completed\']';
         }
       }
 
