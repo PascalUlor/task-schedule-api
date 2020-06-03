@@ -26,7 +26,7 @@ You can as well use a remote database [Elephant SQL](https://www.elephantsql.com
 
 ### Setup
 
-Create a `.env` using the `.env.sample` file as a guide, using your local environment variables
+Create a `.env` using the `.env.example` file as a guide, using your local environment variables
 
 
 Now run your database migrations and run the application
