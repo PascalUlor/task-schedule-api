@@ -1,7 +1,7 @@
 import checkItem from '../utils/checkInputs';
 import requestHandler from '../utils/requestHandler';
 import { User, Project, Task } from '../database/models';
-// import winston from '../config/winston';
+import winston from '../config/winston';
 
 /**
  * Validates all routes
