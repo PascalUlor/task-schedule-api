@@ -5,6 +5,7 @@ import mockUsers from '../../database/mock/user.mock';
 const baseUrl = '/api';
 const app = request(server);
 
+
 describe('[POST] and  [GET] /users', () => {
   test('should create a user and return 201 Created', async () => {
     const res = await app

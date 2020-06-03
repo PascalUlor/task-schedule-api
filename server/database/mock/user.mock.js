@@ -17,6 +17,11 @@ export default {
   validInput4: {
     name: 'Lois',
     surname: 'Lane',
+    email: 'lane@yahoo.com',
+  },
+  validInput5: {
+    name: 'Clark',
+    surname: 'Kent',
     email: 'superman@yahoo.com',
   },
   existingUser: {
