@@ -51,6 +51,10 @@ export default class UserController {
                 {
                   model: Project,
                   as: 'projects',
+                  attributes: ['name', 'body'],
+                  through: {
+                    attributes: [],
+                  },
                 },
               ],
             },
@@ -81,6 +85,10 @@ export default class UserController {
                 {
                   model: Project,
                   as: 'projects',
+                  attributes: ['name', 'body'],
+                  through: {
+                    attributes: [],
+                  },
                 },
               ],
             },
@@ -102,6 +110,10 @@ export default class UserController {
               {
                 model: Project,
                 as: 'projects',
+                attributes: ['name', 'body'],
+                through: {
+                  attributes: [],
+                },
               },
             ],
           },
