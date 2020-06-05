@@ -94,15 +94,21 @@ export default class TaskController {
 
   static async getTasks(req, res) {
     try {
-      const { name } = req.query;
+      const {
+        name, description, score,
+      } = req.query;
+      const scoreQuery = parseInt(score, 10);
       const { perPage, currentPage } = req.query;
-      if (name) {
-        const taskName = name.replace(/ /g, '');
+      if (name || description || score) {
         const searchTasks = await Task.findAndCountAll(
           pagination(
             {
               where: {
-                name: { [Op.iLike]: `%${taskName}%` },
+                [Op.or]: [
+                  { name: { [Op.iLike]: `%${name}%` } },
+                  { description: { [Op.iLike]: `%${description}%` } },
+                  { score: scoreQuery },
+                ],
               },
               order: [
                 ['id', 'ASC'],
@@ -111,6 +117,10 @@ export default class TaskController {
                 {
                   model: User,
                   as: 'users',
+                  attributes: ['name', 'email'],
+                  through: {
+                    attributes: [],
+                  },
                 },
               ],
             },
@@ -118,21 +128,10 @@ export default class TaskController {
           ),
         );
 
-        const TaskDeets = {};
-        const userList = [];
 
         if (searchTasks.rows.length > 0) {
           return requestHandler.success(res, 200, 'Search by task name successfully', {
-            ...searchTasks.rows.map((task) => {
-              TaskDeets.count = searchTasks.count;
-              TaskDeets.TaskName = task.name;
-              TaskDeets.TaskScore = task.score;
-              TaskDeets.status = task.status;
-              TaskDeets.description = task.description;
-              task.users.map((user) => userList.push({ name: user.name, email: user.email }));
-              TaskDeets.users = userList;
-              return TaskDeets;
-            }),
+            ...searchTasks,
           });
         }
         return requestHandler.error(res, 400, 'Search by task name Failed');
@@ -140,30 +139,26 @@ export default class TaskController {
       const tasks = await Task.findAndCountAll(
         pagination(
           {
+            order: [
+              ['id', 'ASC'],
+            ],
             include: [
               {
                 model: User,
                 as: 'users',
+                attributes: ['name', 'email'],
+                through: {
+                  attributes: [],
+                },
               },
             ],
           },
           perPage, currentPage,
         ),
       );
-      const TaskDeets = {};
-      const userList = [];
 
       return requestHandler.success(res, 200, 'Tasks fetched successfully', {
-        ...tasks.rows.map((task) => {
-          TaskDeets.count = tasks.count;
-          TaskDeets.TaskName = task.name;
-          TaskDeets.TaskScore = task.score;
-          TaskDeets.status = task.status;
-          TaskDeets.description = task.description;
-          task.users.map((user) => userList.push({ name: user.name, email: user.email }));
-          TaskDeets.users = userList;
-          return TaskDeets;
-        }),
+        ...tasks,
       });
     } catch (error) {
       return requestHandler.error(res, 500, `server error ${error.message}`);

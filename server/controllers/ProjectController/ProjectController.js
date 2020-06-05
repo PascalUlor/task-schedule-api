@@ -90,15 +90,19 @@ export default class ProjectController {
 
   static async getProjects(req, res) {
     try {
-      const { name } = req.query;
+      const {
+        name, body,
+      } = req.query;
       const { perPage, currentPage } = req.query;
-      if (name) {
-        const projectName = name.replace(/ /g, '');
+      if (name || body) {
         const searchProjects = await Project.findAndCountAll(
           pagination(
             {
               where: {
-                name: { [Op.iLike]: `%${projectName}%` },
+                [Op.or]: [
+                  { name: { [Op.iLike]: `%${name}%` } },
+                  { body: { [Op.iLike]: `%${body}%` } },
+                ],
               },
               order: [
                 ['id', 'ASC'],
@@ -107,6 +111,10 @@ export default class ProjectController {
                 {
                   model: User,
                   as: 'users',
+                  attributes: ['name', 'email'],
+                  through: {
+                    attributes: [],
+                  },
                 },
               ],
             },
@@ -114,21 +122,9 @@ export default class ProjectController {
           ),
         );
 
-        const ProjectDeets = {};
-
-        const userList = [];
-
         if (searchProjects.rows.length > 0) {
           return requestHandler.success(res, 200, 'Search by project name successfully', {
-            ...searchProjects.rows.map((project) => {
-              ProjectDeets.count = searchProjects.count;
-              ProjectDeets.ProjectName = project.name;
-              ProjectDeets.status = project.status;
-              ProjectDeets.body = project.body;
-              project.users.map((user) => userList.push({ name: user.name, email: user.email }));
-              ProjectDeets.users = userList;
-              return ProjectDeets;
-            }),
+            ...searchProjects,
           });
         }
         return requestHandler.error(res, 400, 'Search by project name Failed');
@@ -136,30 +132,26 @@ export default class ProjectController {
       const projects = await Project.findAndCountAll(
         pagination(
           {
+            order: [
+              ['id', 'ASC'],
+            ],
             include: [
               {
                 model: User,
                 as: 'users',
+                attributes: ['name', 'email'],
+                through: {
+                  attributes: [],
+                },
               },
             ],
           },
           perPage, currentPage,
         ),
       );
-      const ProjectDeets = {};
-
-      const userList = [];
 
       return requestHandler.success(res, 200, 'Projects fetched successfully', {
-        ...projects.rows.map((project) => {
-          ProjectDeets.count = projects.count;
-          ProjectDeets.ProjectName = project.name;
-          ProjectDeets.status = project.status;
-          ProjectDeets.body = project.body;
-          project.users.map((user) => userList.push({ name: user.name, email: user.email }));
-          ProjectDeets.users = userList;
-          return ProjectDeets;
-        }),
+        ...projects,
       });
     } catch (error) {
       return requestHandler.error(res, 500, `server error ${error.message}`);
