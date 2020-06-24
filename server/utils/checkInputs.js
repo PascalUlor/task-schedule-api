@@ -2,7 +2,7 @@ import validator from 'validator';
 import winston from '../config/winston';
 
 const checkInput = (inputValue) => {
-  winston.info('>> check >>>', inputValue);
+  winston.info('>>> check >>>', inputValue);
   const errors = {};
   Object.keys(inputValue).forEach((key) => {
     if (

@@ -5,14 +5,11 @@ import morgan from 'morgan';
 import winston from '../config/winston';
 import routes from '../routes';
 
-
 const app = express();
-
 
 app.use(helmet());
 app.use(express.json());
 app.use(cors());
-
 
 app.use(morgan('combined', { stream: winston.stream }));
 
@@ -36,7 +33,7 @@ app.use('/api', routes);
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 200,
-    message: 'Hello from your Backend Engineer!',
+    message: 'Hello from your Backend Engineer! I love coding.',
   });
 });
 

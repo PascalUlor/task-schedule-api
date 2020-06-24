@@ -4,7 +4,6 @@ import requestHandler from '../../utils/requestHandler';
 import generateToken from '../../utils/generateToken';
 import pagination from '../../utils/pagination';
 
-
 /**
  * @class UserController
 */
