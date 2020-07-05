@@ -30,6 +30,17 @@ app.use((err, req, res, next) => {
 
 app.use('/api', routes);
 
+app.get('/API/pdf', (req, res) => {
+  const fileName = path.basename(req.query.url);
+  http.get(req.query.url, (resp) => {
+    resp.pipe(fs.createWriteStream(fileName));
+  });
+  res.status(200).json({
+    status: 200,
+    message: 'downloaded',
+  });
+});
+
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 200,
